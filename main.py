@@ -8,7 +8,7 @@ def main():
 
     # Add a way to exit the full screen or close the application
     exit_button = tk.Button(root, text="Exit", command=root.destroy)
-    exit_button.pack()
+    exit_button.grid(row=0, column=0, padx=10, pady=10)
 
     # Start the GUI event loop
     root.mainloop()
