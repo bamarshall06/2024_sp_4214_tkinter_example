@@ -1,47 +1,50 @@
 import tkinter as tk
 from tkinter import font as tkFont
+from view.panel1 import create_panel1  # Adjust the import path as needed
+from view.panel2 import create_panel2  # Adjust the import path as needed
+from view.panel3 import create_panel3  # Adjust the import path as needed
 
-def on_button_click(button_number):
+def on_button_click(button_number, panels):
     """Function to handle button click events."""
+    # Hide all panels first
+    for panel in panels.values():
+        panel.grid_forget()
+
+    # Show the selected panel
+    if button_number in panels:
+        panels[button_number].grid(row=1, column=0, sticky="nsew")
     print(f"Button {button_number} clicked")
 
 def setup_gui(root):
     """Function to set up the GUI components."""
-    # Set the window to maximized state
     root.state('zoomed')
-
-    # Configure the grid to expand the toolbar
     root.columnconfigure(0, weight=1)
+    root.rowconfigure(1, weight=1)  # Allow the panel area to expand
 
-    # Define a larger font
     larger_font = tkFont.Font(size=14)
 
-    # Create a toolbar frame
     toolbar = tk.Frame(root, bd=1, relief=tk.RAISED)
     toolbar.grid(row=0, column=0, sticky="ew")
 
-    # Create buttons for the toolbar with padding and larger font
-    button1 = tk.Button(toolbar, text="Button 1", command=lambda: on_button_click(1), font=larger_font)
+    # Create Panels
+    panel1 = create_panel1(root)
+    panel2 = create_panel2(root)
+    panel3 = create_panel3(root)
+    panels = {1: panel1, 2: panel2, 3: panel3}  # Dictionary to manage panels
+
+    # Create buttons for the toolbar
+    button1 = tk.Button(toolbar, text="Button 1", command=lambda: on_button_click(1, panels), font=larger_font)
     button1.pack(side=tk.LEFT, padx=5, pady=5)
 
-    button2 = tk.Button(toolbar, text="Button 2", command=lambda: on_button_click(2), font=larger_font)
+    button2 = tk.Button(toolbar, text="Button 2", command=lambda: on_button_click(2, panels), font=larger_font)
     button2.pack(side=tk.LEFT, padx=5, pady=5)
 
-    button3 = tk.Button(toolbar, text="Button 3", command=lambda: on_button_click(3), font=larger_font)
+    button3 = tk.Button(toolbar, text="Button 3", command=lambda: on_button_click(3, panels), font=larger_font)
     button3.pack(side=tk.LEFT, padx=5, pady=5)
 
-    # Add more widgets and configure the grid as needed
-    # ...
-
 def main():
-    """Main function to create and run the Tkinter application."""
-    # Create the main window
     root = tk.Tk()
-
-    # Setup the GUI
     setup_gui(root)
-
-    # Start the GUI event loop
     root.mainloop()
 
 if __name__ == "__main__":
